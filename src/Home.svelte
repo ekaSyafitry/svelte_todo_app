@@ -194,7 +194,7 @@
       <div class="wrapTitle">
         {#if current == 'all'}
         <div class="wrapDay">
-          <h1>{sel_date}</h1>
+          <h2>{sel_date}</h2>
           <div class="btnFilter" on:click={toogleMenu}><i class="fas fa-filter"></i></div>
           <div class="{showMenu? "circle show" : "circle"}">
             <div id="all" on:click={btnAll} class="{current === 'all' ? 'active' : ''}">All</div>
@@ -208,7 +208,7 @@
           </div>
         {:else if current == 'com'}
         <div class="wrapDay">
-          <h1>Complete tasks</h1>
+          <h2>Complete tasks</h2>
           <div class="btnFilter" on:click={toogleMenu}><i class="fas fa-filter"></i></div>
           <div class="{showMenu? "circle show" : "circle"}">
             <div id="all" on:click={btnAll} class="{current === 'all' ? 'active' : ''}">All</div>
@@ -219,7 +219,7 @@
         <div style="color: #60563d;">{totalComplete} tasks </div>
         {:else if current == 'incom'}
         <div class="wrapDay">
-          <h1>Incomplete tasks</h1>
+          <h2>Incomplete tasks</h2>
           <div class="btnFilter" on:click={toogleMenu}><i class="fas fa-filter"></i></div>
           <div class="{showMenu? "circle show" : "circle"}">
             <div id="all" on:click={btnAll} class="{current === 'all' ? 'active' : ''}">All</div>
@@ -239,7 +239,7 @@
         {#if hasLoad}
           <div >
             {#if todos.length == 0}
-            <div>
+            <div style="padding-top: 25px;">
               <img src="undraw_empty_xct9.svg" alt="" width="100%">
               <div class="empty">No plan yet..</div>
             </div>
@@ -274,14 +274,13 @@
             </div>
           </div>
         {/if}
-      </div>
-        <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} tab={current} />
-          <Modal modalActive={editActive} type="edit" data={dataModal} on:close={() => (editActive = false)} />
-          <ModalConfirm modalActive={completeActive} type="complete" on:close={() => (completeActive = false)} on:yesBtn={confirmComplete} />
-          <ModalConfirm modalActive={incompleteActive} type="incomplete" on:yesBtn={confirmIncomplete} on:close={() => (incompleteActive = false)} />
-          <ModalConfirm modalActive={trashActive} type="trash" on:yesBtn={confirmDelete} on:close={() => (trashActive = false)} />
+      </div>  
     </div>
-   
+    <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} tab={current} />
+      <Modal modalActive={editActive} type="edit" data={dataModal} on:close={() => (editActive = false)} />
+      <ModalConfirm modalActive={completeActive} type="complete" on:close={() => (completeActive = false)} on:yesBtn={confirmComplete} />
+      <ModalConfirm modalActive={incompleteActive} type="incomplete" on:yesBtn={confirmIncomplete} on:close={() => (incompleteActive = false)} />
+      <ModalConfirm modalActive={trashActive} type="trash" on:yesBtn={confirmDelete} on:close={() => (trashActive = false)} />
   </div>
 </slot>
 
@@ -295,7 +294,7 @@
     display: grid;
     // background: #fff;
     // grid-template-rows: 2fr 4fr;
-    grid-template-rows: 15% 85%;
+    grid-template-rows: 13% 87%;
     background: linear-gradient(71deg, rgba(250, 94, 111, 1) 30%, rgba(251, 149, 97, 1) 70%);
   }
 
@@ -355,7 +354,7 @@
       }
     }
     .header{
-      margin:28px 25px;
+      margin:20px 25px;
       align-self: center;
       display: flex;
       justify-content: space-between;
@@ -430,7 +429,7 @@
        visibility: visible;
      }
 
-    h1, .unfinished{
+    h2, .unfinished{
       color: #60563d;
       margin-bottom: 10px;
     }

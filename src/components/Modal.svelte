@@ -173,6 +173,7 @@
     width: 93%;
   }
   .add-modal {
+    z-index: 1;
     @extend %modal;
     height: 75vh;
     overflow: hidden;
