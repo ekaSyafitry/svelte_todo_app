@@ -175,7 +175,7 @@
   .add-modal {
     z-index: 1;
     @extend %modal;
-    height: 75vh;
+    height: 480px;
     overflow: hidden;
 
     h2 {
