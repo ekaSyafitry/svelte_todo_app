@@ -117,7 +117,7 @@
   const confirmComplete = () => {
     console.log(complete, 'complete')
     // if (complete == true) {
-      database.ref('todolist/' + id_todo + '/complete').set(false);
+      database.ref('todolist/' + id_todo + '/complete').set(true);
       completeActive = false   
     // } else{
      
@@ -126,7 +126,7 @@
 
   const confirmIncomplete = () => {
     console.log(id_todo)
-  database.ref('todolist/' + id_todo + '/complete').set(true);
+  database.ref('todolist/' + id_todo + '/complete').set(false);
     incompleteActive = false
     console.log(incompleteActive)
 }
@@ -179,14 +179,18 @@
     <div class="calender-box">
      
       <div class="header">
-        <h1>Let's Plan</h1>
+        <h1>To-do</h1>
       <div class="box-date">
         <div class="cal">
           <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
         </div>
       </div>
       </div>
+    </div>
 
+
+
+    <div class="card">
       <div class="wrapTitle">
         {#if current == 'all'}
         <div class="wrapDay">
@@ -226,11 +230,6 @@
         <div style="color: #60563d;">{totalIncomplete} tasks </div>
         {/if}
       </div>
-    </div>
-
-
-
-    <div class="card">
       <div class="card-box">
         {#if isLoad}
           <div class="wrapLoad">
@@ -250,14 +249,16 @@
               <li class="card-list">
                 <div class="btn-check">
                   {#if todo.complete}
-                   <i class="fas fa-check-circle" on:click={() => completeData(todo)}></i>
+                   <i class="fas fa-check-circle" on:click={() => incompleteData(todo)}></i>
                   {:else}
-                   <i class="far fa-circle"  on:click={() => incompleteData(todo)}></i>
+                   <i class="far fa-circle"  on:click={() => completeData(todo)}></i>
                   {/if}
                 </div>
                 <div style="width: 73%; margin-right: 8px;">
                   <div class={todo.complete? 'title cross' : 'title' }>{todo.name}</div>
+                  {#if todo.notes != ''}
                   <div class={todo.complete? 'card-desc cross' : 'card-desc' }>{todo.notes}</div>
+                  {/if}
                 </div>
                
                 <div class="btn-group">
@@ -273,7 +274,7 @@
             </div>
           </div>
         {/if}
-        </div>
+      </div>
         <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} tab={current} />
           <Modal modalActive={editActive} type="edit" data={dataModal} on:close={() => (editActive = false)} />
           <ModalConfirm modalActive={completeActive} type="complete" on:close={() => (completeActive = false)} on:yesBtn={confirmComplete} />
@@ -292,10 +293,10 @@
     margin: 0 auto;
     background: #fff;
     display: grid;
-    background: #fff;
+    // background: #fff;
     // grid-template-rows: 2fr 4fr;
-    grid-template-rows: 225px 1fr;
-    // background: linear-gradient(71deg, rgba(250, 94, 111, 1) 30%, rgba(251, 149, 97, 1) 70%);
+    grid-template-rows: 15% 85%;
+    background: linear-gradient(71deg, rgba(250, 94, 111, 1) 30%, rgba(251, 149, 97, 1) 70%);
   }
 
   .calender-box {
@@ -303,7 +304,7 @@
     display: grid;
     // grid-template-columns: 2fr 1fr;
     // padding: 0 25px;
-    position: relative;
+    // position: relative;
 
     .capt {
       margin-top: 14px;
@@ -361,17 +362,33 @@
     }
     
 
+  
+  }
+  @keyframes progressBar {
+    0% { width: 0; }
+    100% { width: auto; }
+  }
+
+ 
+
+  .card {
+    // padding: 25px 0;
+    background-color: #fff;
+    // overflow-y: scroll;
+    border-radius: 50px 0 0 0;
+
     .wrapTitle{
-    padding: 30px 25px 25px 25px;
+    position: relative;
+    padding: 25px;
     background-color: #fff;
     border-radius: 60px 0 0;
-    height: 130px;
+    // height: 130px;
     .wrapDay{
       display: flex;
       align-items: center;
       justify-content: space-between;
       .btnFilter{
-        position: relative;
+        // position: relative;
         i{
         font-size: 20px;
         color: #60563d;
@@ -384,7 +401,7 @@
         width: 105px;
         display: block;
         position: absolute;
-        bottom: -22px;
+        top: 65px;
         right: 17px;
         z-index: 2;
         padding-left: 0px;
@@ -429,7 +446,7 @@
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
     border-radius: 25px;
-    margin-bottom: 1.5rem;
+    // margin-bottom: 1.5rem;
     // padding: 5px;
     box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
       #myBar {
@@ -443,20 +460,12 @@
    }
 
   }
-  }
-  @keyframes progressBar {
-    0% { width: 0; }
-    100% { width: auto; }
-  }
-
- 
-
-  .card {
-    padding: 20px 25px 25px 25px;
-    background-color: #fff;
-    overflow-y: scroll;
-    // border-radius: 60px 0 0;
   
+  .card-box {
+    padding: 0 25px 25px 25px;
+    max-height: 75%;
+    overflow: auto;
+  }
     .empty {
       margin-top: 30px;
       font-size: 18px;
