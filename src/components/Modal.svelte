@@ -7,7 +7,6 @@
     export let modalActive;
     export let type;
     export let data;
-    export let tab;
    
     //state
     const dispatch = createEventDispatcher();
@@ -31,7 +30,7 @@
     const closeHandler = () => dispatch('close');
     const handleSubmit = () => {
         if(type=='add'){
-            console.log(name)
+            // console.log(name)
             let frmt_date = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
             const rootRef = database.ref('todolist')
             const autoId = rootRef.push().key
@@ -46,7 +45,7 @@
             notes = '',
             currentDate = new Date()
             closeHandler()
-            console.log(tab, 'tabbbbbbbbbb')
+            // console.log(tab, 'tabbbbbbbbbb')
         }
         else if(type=='edit'){
           let frmt_date = data.date.getFullYear() + "-" + (data.date.getMonth() + 1) + "-" + data.date.getDate()

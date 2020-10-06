@@ -11,6 +11,7 @@
 	<link rel='stylesheet' href='./build/bundle.css'>
 	<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+	<link rel='manifest' href='manifest.json'>
 	
 
 	<script defer src='./build/bundle.js'></script>
@@ -32,9 +33,21 @@
 		// Initialize Firebase
 		firebase.initializeApp(firebaseConfig);
 		// firebase.analytics();
-	  </script>
+	</script>
 </head>
 
 <body>
+	<script>
+		if ('serviceWorker' in navigator){
+			navigator.serviceWorker.register('./sw.js', {scope: '/'}).then(function(registration){
+				console.log('ServiceWorker registration succesfull with scope:', registration.scope);
+			}).catch(function(error){
+				console.log('ServiceWorker registration failed:', error);
+			})
+		}
+		else{
+			console.log('ServiceWorker not supported');
+		}
+	</script>
 </body>
 </html>

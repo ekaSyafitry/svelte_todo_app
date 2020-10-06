@@ -49,7 +49,7 @@
   }
 
   const realtimedata = async (data) =>{
-    console.log(data)
+    // console.log(data)
     let reads = []
     data.forEach(function (val) {
       reads.push({...val.val(), id: val.key})
@@ -68,7 +68,7 @@
     else{
       todos = todolist_incompleted
     }
-    console.log(todos)
+    // console.log(todos)
     countProgress()
   }
 
@@ -76,7 +76,7 @@
     current = 'all'
     todos = todolist 
     setTimeout(() => {
-      console.log(document.getElementById("myBar"))
+      // console.log(document.getElementById("myBar"))
     countProgress()
     }, 500);
    showMenu = false
@@ -92,10 +92,10 @@
     current = 'incom'
     todos = todolist_incompleted
     showMenu = false
-    console.log(todolist_incompleted)
+    // console.log(todolist_incompleted)
   }
   const editData = td =>{ 
-    console.log('sdfsd')
+    // console.log('sdfsd')
     editActive = true
     let tgl = new Date(td.date)
     td.date = tgl
@@ -115,7 +115,7 @@
   }
 
   const confirmComplete = () => {
-    console.log(complete, 'complete')
+    // console.log(complete, 'complete')
     // if (complete == true) {
       database.ref('todolist/' + id_todo + '/complete').set(true);
       completeActive = false   
@@ -125,10 +125,10 @@
   }
 
   const confirmIncomplete = () => {
-    console.log(id_todo)
+    // console.log(id_todo)
   database.ref('todolist/' + id_todo + '/complete').set(false);
     incompleteActive = false
-    console.log(incompleteActive)
+    // console.log(incompleteActive)
 }
 
   const deleteData = id => {
@@ -149,7 +149,7 @@
       sum = todos.length
       num = totalComplete / sum * 100
       percent = num.toFixed(1);
-      console.log(percent)
+      // console.log(percent)
       var elem = document.getElementById("myBar");
       if(todos.length == 0){
         elem.style.width = "0%";  
@@ -162,7 +162,7 @@
   
   const toogleMenu = () => {
     showMenu = !showMenu;
-    console.log('czndsdjk')
+    // console.log('czndsdjk')
   }
 
   formatDate()
@@ -177,14 +177,14 @@
 <slot>
   <div class="container home">
     <div class="calender-box">
-     
+
       <div class="header">
         <h1>To-do</h1>
-      <div class="box-date">
-        <div class="cal">
-          <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
+        <div class="box-date">
+          <div class="cal">
+            <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
+          </div>
         </div>
-      </div>
       </div>
     </div>
 
@@ -276,7 +276,7 @@
         {/if}
       </div>  
     </div>
-    <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} tab={current} />
+    <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} data={dataModal}/>
       <Modal modalActive={editActive} type="edit" data={dataModal} on:close={() => (editActive = false)} />
       <ModalConfirm modalActive={completeActive} type="complete" on:close={() => (completeActive = false)} on:yesBtn={confirmComplete} />
       <ModalConfirm modalActive={incompleteActive} type="incomplete" on:yesBtn={confirmIncomplete} on:close={() => (incompleteActive = false)} />
@@ -305,14 +305,14 @@
     // padding: 0 25px;
     // position: relative;
 
-    .capt {
-      margin-top: 14px;
-      font-size: 11px;
-      width: 100px;
-      color: #fff;
-      font-style: italic;
-      opacity: 0.7;
-    }
+    // .capt {
+    //   margin-top: 14px;
+    //   font-size: 11px;
+    //   width: 100px;
+    //   color: #fff;
+    //   font-style: italic;
+    //   opacity: 0.7;
+    // }
 
     h1 {
       color: #fff;
@@ -322,53 +322,30 @@
     .box-date {
       align-self: flex-end;
       color: white;
-      // margin-left: 20px;
-      // margin-bottom: 30px;
-      // display: grid;
 
-      .date {
-        text-align: end;
+      // .date {
+      //   text-align: end;
 
-        i {
-          font-size: 30px;
-          margin-bottom: 5px;
-        }
-      }
+      //   i {
+      //     font-size: 30px;
+      //     margin-bottom: 5px;
+      //   }
+      // }
 
       .cal {
         align-self: end;
         text-align: end;
-
-        .date-cal {
-          text-align: right !important;
-          margin-bottom: 30px;
-
-          i {
-            font-size: 30px;
-          }
-
-          .input-date {
-            display: none;
-          }
-        }
       }
     }
+
     .header{
       margin:20px 25px;
       align-self: center;
       display: flex;
       justify-content: space-between;
     }
-    
-
   
   }
-  @keyframes progressBar {
-    0% { width: 0; }
-    100% { width: auto; }
-  }
-
- 
 
   .card {
     // padding: 25px 0;
@@ -506,7 +483,7 @@
       }
 
       .card-desc {
-        overflow-wrap: break-word;
+        overflow-wrap: anywhere;
         margin-top: 7px;
         font-size: 14px;
         color: #60563d;;

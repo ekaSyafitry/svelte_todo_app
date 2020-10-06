@@ -9,7 +9,7 @@
   export let isAllowed = () => true;
   export let selected = new Date();
   export let type = ""
-  console.log(type)
+  // console.log(type)
 
   // state
   let date, month, year, showDatePicker,dt;
@@ -47,7 +47,7 @@
   const onDateChange = d => {
     showDatePicker = false;
     dispatch("datechange", d.detail);
-    console.log(d.detail)
+    // console.log(d.detail)
     selected = d.detail
     getValDate()
   };
@@ -55,7 +55,7 @@
   const getValDate = () => {
     var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",];
     dt = months[selected.getMonth()]+" "+selected.getDate()+" "+selected.getFullYear();
-    console.log(dt)
+    // console.log(dt)
   }
  
  getValDate()

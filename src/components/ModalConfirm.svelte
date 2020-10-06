@@ -6,7 +6,7 @@
     export let modalActive;
 
     afterUpdate(() => {
-	console.log("after update name:", type);
+	// console.log("after update name:", type);
 	})
 
     const dispatch = createEventDispatcher();
