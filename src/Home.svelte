@@ -29,7 +29,8 @@
       percent = 1,
       totalIncomplete = 0,
       sum = 0,
-      showMenu = false;
+      showMenu = false,
+      standAlone = false;
 
   const formatDate = () =>{
     let now = new Date()
@@ -166,7 +167,7 @@
   }
 
   const installModal = () => {
-    if(promptInstall){
+    if(promptInstall !== null){
     promptInstall.prompt()
     promptInstall.userChoice.then(function(choiceResult){
       console.log(choiceResult.outcome);
@@ -178,8 +179,17 @@
     });
     promptInstall = null;
   }
+  else{
+    console.log('dfsdfj')
+  }
   }
 
+  if (window.matchMedia('(display-mode: standalone)').matches) { 
+    standAlone = true 
+    // console.log('dfsdkf')  
+}  
+
+// console.log(promptInstall)
   formatDate()
   getData()
   // countProgress()
@@ -196,17 +206,20 @@
       <div class="header">
         <h1>To-do</h1>
         <div class="box-date">
-          <div on:click={installModal}> 
+          {#if promptInstall !== null}
+          {#if !standAlone}
+          <!-- {promptInstall} -->
+          <div on:click={installModal} style="margin-right:20px"> 
             <i class="fas fa-arrow-alt-circle-down" style="font-size:25px"></i>
           </div>
+          {/if}
+          {/if}
           <div class="cal">
             <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
           </div>
         </div>
       </div>
     </div>
-
-
 
     <div class="card">
       <div class="wrapTitle">
@@ -341,9 +354,6 @@
       align-self: flex-end;
       color: white;
       display: flex;
-      width: 60px;
-      justify-content: space-between;
-
       // .date {
       //   text-align: end;
 
