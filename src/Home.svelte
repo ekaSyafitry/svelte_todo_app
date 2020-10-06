@@ -12,7 +12,7 @@
     btnAll()
   };
 
-  let sel_date,day,isLoad,hasLoad, complete, totalComplete,num;
+  let sel_date,day,isLoad,hasLoad, complete, totalComplete,num,deferredPrompt;
   const database = firebase.database();
   let todolist =[],
       todos = [],
@@ -163,39 +163,35 @@
   
   const toogleMenu = () => {
     showMenu = !showMenu;
-    // console.log('czndsdjk')
   }
 
   const installModal = () => {
-    if(promptInstall !== null){
-    promptInstall.prompt()
-    promptInstall.userChoice.then(function(choiceResult){
-      console.log(choiceResult.outcome);
-      if(choiceResult.outcome==='dismissed'){
-        console.log('user cancelled installation');
-      }else{
-        console.log('user add to home screen');
-      }
-    });
-    promptInstall = null;
-  }
-  else{
-    console.log('dfsdfj')
-  }
+    deferredPrompt.prompt();
   }
 
+  const installContainer = document.getElementById('install')
   if (window.matchMedia('(display-mode: standalone)').matches) { 
     standAlone = true 
-    // console.log('dfsdkf')  
-}  
+    console.log('dfsdkf')  
+  }  
 
-// console.log(promptInstall)
+  window.addEventListener('beforeinstallprompt', (e) => {
+  showInstallPromo(e);
+  });
+
+  window.addEventListener('appinstalled', (evt) => {
+    installContainer.classList.toggle('hidden', false);
+    deferredPrompt = null;
+  });
+
+  const showInstallPromo = e => {
+    deferredPrompt = e;
+    installContainer.classList.toggle('hidden', false);
+  }
+
   formatDate()
   getData()
-  // countProgress()
-  
-  // btnAll()
-
+ 
 </script>
 
 
@@ -206,13 +202,10 @@
       <div class="header">
         <h1>To-do</h1>
         <div class="box-date">
-          {#if promptInstall !== null}
-          {#if !standAlone}
-          <!-- {promptInstall} -->
-          <div on:click={installModal} style="margin-right:20px"> 
+          {#if !standAlone }
+          <div on:click={installModal} style="margin-right:20px" id="install" class="hidden"> 
             <i class="fas fa-arrow-alt-circle-down" style="font-size:25px"></i>
           </div>
-          {/if}
           {/if}
           <div class="cal">
             <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
@@ -316,6 +309,9 @@
 </slot>
 
 <style type="text/scss">
+  .hidden{
+    display: none;
+  }
   .container {
     max-width: 500px;
     height: 100vh;

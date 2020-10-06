@@ -49,20 +49,19 @@
 			console.log('ServiceWorker not supported');
 		}
 
-		let promptInstall = null
+		// let promptInstall = null
 		window.addEventListener('beforeinstallprompt', function(event){
+			// showInstallPrompt(event)
 			console.log('before add to home screen');
 			event.preventDefault();
-			promptInstall = event;
+			// promptInstall = event;
 			return false;
 		});
 
-		window.addEventListener('appinstalled', (evt) => {
-		// Log install to analytics
-		console.log('INSTALL: Success', evt);
-		});
-
-		
+		// window.addEventListener('appinstalled', (evt) => {
+		// // Log install to analytics
+		// console.log('INSTALL: Success', evt);
+		// });	
 	</script>
 </body>
 </html>
