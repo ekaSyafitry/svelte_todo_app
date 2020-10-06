@@ -1,42 +1,42 @@
 {
-    "name": "To-do App",
-    "short_name": "To-do",
+    "name": " Svelte To-do App",
+    "short_name": "Svelte To-do",
     "start_url": "/",
     "icons": [
       {
-        "src": "/assets/icon_todo36.jpg",
+        "src": "/assets/icon_todo36.png",
         "sizes": "36x36",
-        "type": "image/jpg"
+        "type": "image/png"
       },
       {
-        "src": "/assets/icon_todo46.jpg",
+        "src": "/assets/icon_todo48.png",
         "sizes": "48x48",
-        "type": "image/jpg"
+        "type": "image/png"
       },
       {
-        "src": "/assets/icon_todo96.jpg",
+        "src": "/assets/icon_todo96.png",
         "sizes": "96x96",
-        "type": "image/jpg"
+        "type": "image/png"
       },
       {
-        "src": "/assets/icon_todo128.jpg",
+        "src": "/assets/icon_todo128.png",
         "sizes": "128x128",
-        "type": "image/jpg"
+        "type": "image/png"
       },
       {
-        "src": "/assets/icon_todo144.jpg",
+        "src": "/assets/icon_todo144.png",
         "sizes": "144x144",
-        "type": "image/jpg"
+        "type": "image/png"
       },
       {
-        "src": "/assets/icon_todo192.jpg",
+        "src": "/assets/icon_todo192.png",
         "sizes": "192x192",
-        "type": "image/jpg"
+        "type": "image/png"
       },
       {
-        "src": "/assets/icon_todo256.jpg",
+        "src": "/assets/icon_todo256.png",
         "sizes": "256x256",
-        "type": "image/jpg"
+        "type": "image/png"
       }
     ],
     "theme_color": "#EF5350",

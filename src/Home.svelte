@@ -165,6 +165,21 @@
     // console.log('czndsdjk')
   }
 
+  const installModal = () => {
+    if(promptInstall){
+    promptInstall.prompt()
+    promptInstall.userChoice.then(function(choiceResult){
+      console.log(choiceResult.outcome);
+      if(choiceResult.outcome==='dismissed'){
+        console.log('user cancelled installation');
+      }else{
+        console.log('user add to home screen');
+      }
+    });
+    promptInstall = null;
+  }
+  }
+
   formatDate()
   getData()
   // countProgress()
@@ -181,6 +196,9 @@
       <div class="header">
         <h1>To-do</h1>
         <div class="box-date">
+          <div on:click={installModal}> 
+            <i class="fas fa-arrow-alt-circle-down" style="font-size:25px"></i>
+          </div>
           <div class="cal">
             <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
           </div>
@@ -322,6 +340,9 @@
     .box-date {
       align-self: flex-end;
       color: white;
+      display: flex;
+      width: 60px;
+      justify-content: space-between;
 
       // .date {
       //   text-align: end;
@@ -339,7 +360,7 @@
     }
 
     .header{
-      margin:20px 25px;
+      margin:0 25px;
       align-self: center;
       display: flex;
       justify-content: space-between;

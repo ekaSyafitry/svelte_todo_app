@@ -48,6 +48,13 @@
 		else{
 			console.log('ServiceWorker not supported');
 		}
+
+		window.addEventListener('beforeinstallprompt', function(event){
+			console.log('before add to home screen');
+			event.preventDefault();
+			promptInstall = event;
+			return false;
+		});
 	</script>
 </body>
 </html>
