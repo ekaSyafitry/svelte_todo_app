@@ -166,15 +166,16 @@
     showMenu = !showMenu;
   }
 
-//  ------------------------------------------- service worker --------------------------------------------------------------
+//  ------------------------------------------- PWA --------------------------------------------------------------
   const installModal = () => {
     deferredPrompt.prompt();
+    installActive = false
   }
 
-  if (window.matchMedia('(display-mode: standalone)').matches) { 
-    standAlone = true 
-    console.log('dfsdkf')  
-  }  
+  // if (window.matchMedia('(display-mode: standalone)').matches) { 
+  //   standAlone = true 
+  //   console.log('dfsdkf')  
+  // }  
 
   window.addEventListener('beforeinstallprompt', (e) => {
   showInstallPromo(e);
