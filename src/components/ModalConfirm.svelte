@@ -6,7 +6,7 @@
     export let modalActive;
 
     afterUpdate(() => {
-	// console.log("after update name:", type);
+	console.log("after update name:", type);
 	})
 
     const dispatch = createEventDispatcher();
@@ -18,23 +18,37 @@
 <div>
     <div class="{modalActive? 'bg-modalComplete active' : 'bg-modalComplete'}" on:click={closeHandler} ></div>
     <div class="{modalActive? 'modalComplete active' : 'modalComplete'}">
-        {#if type =='complete'}
+        {#if type ==='complete'}
         <div>
             <div class="title" >Add to complete task?</div>
         </div>
         
-        {:else if type=='incomplete'}
+        {:else if type==='incomplete'}
         <div>
             <div class="title"> Add to incomplete task?</div>
         </div>
     
-        {:else if type='trashfsdfsd'}
+        {:else if type==='trash'}
         <div >
             <div class="title"> Are you sure to delete data?</div>
         </div>
+        {:else if type==='install'}
+        <div >
+          <div class="title"> Do you like this application?</div>
+      </div>
         {/if}
+
+        {#if type==='install'}
+      <div style="display:flex; justify-content:space-between;">
+        <button class="btnY" on:click={confirmComplete}>Download Now</button> 
+        <button class="btnN" on:click={closeHandler}>Cancel</button>
+      </div>
+      {:else}
+      <div>
         <button class="btnY" on:click={confirmComplete}>Yes</button> 
-        <button class="btnN" on:click={closeHandler}>No</button>
+        <button class="btnN" on:click={closeHandler}>Cancel</button>
+      </div>
+      {/if}
     </div>
 </div>
 
@@ -91,7 +105,7 @@
 
   .modalComplete {
     @extend %modal;
-    height: 25%;
+    height: 130px;
 
     .title {
       margin-bottom: 30px;
@@ -101,23 +115,28 @@
     }
 
     .btnY {
-      @extend %btn;
+      // @extend %btn;
+      border: none;
+      background: linear-gradient(71deg, #fa5e6f 30%, #fb9561 70%);
       @extend %btnConfirm;
-      padding: 14px 12px;
+      color: #fff;
+      padding: 10px;
     }
 
     .btnN {
-      @extend %btn;
-      padding: 14px 14px;
+      border: 1px solid #EF5350;
+      background-color: #fff;
+      color: #EF5350;
+      padding: 10px;
       margin-left: 20px;
       @extend %btnConfirm;
     }
   }
 
   %btnConfirm {
+    border-radius: 10px;
     font-weight: 600;
-    color: #fff;
-    font-size: 16px;
+    font-size: 14px;
   }
 
 </style>

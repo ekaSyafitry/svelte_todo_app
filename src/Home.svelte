@@ -30,7 +30,8 @@
       totalIncomplete = 0,
       sum = 0,
       showMenu = false,
-      standAlone = false;
+      standAlone = false,
+      installActive = false;
 
   const formatDate = () =>{
     let now = new Date()
@@ -165,40 +166,31 @@
     showMenu = !showMenu;
   }
 
+//  ------------------------------------------- service worker --------------------------------------------------------------
   const installModal = () => {
     deferredPrompt.prompt();
   }
 
- 
   if (window.matchMedia('(display-mode: standalone)').matches) { 
     standAlone = true 
     console.log('dfsdkf')  
   }  
 
-
-  onMount( () => {
-  const installContainer = document.getElementById('install')
   window.addEventListener('beforeinstallprompt', (e) => {
   showInstallPromo(e);
   });
 
   window.addEventListener('appinstalled', (evt) => {
-    installContainer.classList.toggle('hidden', false);
+    installActive = !installActive
     deferredPrompt = null;
   });
 
   const showInstallPromo = e => {
-    // console.log(installContainer)
     deferredPrompt = e;
-    installContainer.classList.toggle('hidden', false);
+    installActive = !installActive
+    console.log(installActive)
   }
- });
   
-
- 
-
- 
-
   formatDate()
   getData()
  
@@ -315,6 +307,7 @@
       <ModalConfirm modalActive={completeActive} type="complete" on:close={() => (completeActive = false)} on:yesBtn={confirmComplete} />
       <ModalConfirm modalActive={incompleteActive} type="incomplete" on:yesBtn={confirmIncomplete} on:close={() => (incompleteActive = false)} />
       <ModalConfirm modalActive={trashActive} type="trash" on:yesBtn={confirmDelete} on:close={() => (trashActive = false)} />
+      <ModalConfirm modalActive={installActive} type="install" on:close={() => (installActive = false)} on:yesBtn={installModal} />
   </div>
 </slot>
 
