@@ -69,7 +69,7 @@ self.addEventListener("fetch", function(event) {
         /* We return the cached response immediately if there is one, and fall
            back to waiting on the network as usual.
         */
-        console.log('WORKER: fetch event', cached ? '(cached)' : '(network)', event.request.url);
+        // console.log('WORKER: fetch event', cached ? '(cached)' : '(network)', event.request.url);
         return cached || networked;
 
         function fetchedFromNetwork(response) {

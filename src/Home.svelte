@@ -169,12 +169,15 @@
     deferredPrompt.prompt();
   }
 
-  const installContainer = document.getElementById('install')
+ 
   if (window.matchMedia('(display-mode: standalone)').matches) { 
     standAlone = true 
     console.log('dfsdkf')  
   }  
 
+
+  onMount( () => {
+  const installContainer = document.getElementById('install')
   window.addEventListener('beforeinstallprompt', (e) => {
   showInstallPromo(e);
   });
@@ -185,9 +188,16 @@
   });
 
   const showInstallPromo = e => {
+    // console.log(installContainer)
     deferredPrompt = e;
     installContainer.classList.toggle('hidden', false);
   }
+ });
+  
+
+ 
+
+ 
 
   formatDate()
   getData()
