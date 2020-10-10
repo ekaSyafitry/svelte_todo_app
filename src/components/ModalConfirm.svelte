@@ -6,7 +6,7 @@
     export let modalActive;
 
     afterUpdate(() => {
-	console.log("after update name:", type);
+	// console.log("after update name:", type);
 	})
 
     const dispatch = createEventDispatcher();
@@ -45,7 +45,7 @@
       </div>
       {:else}
       <div>
-        <button class="btnY" on:click={confirmComplete}>Yes</button> 
+        <button class="btnYes" on:click={confirmComplete}>Yes</button> 
         <button class="btnN" on:click={closeHandler}>Cancel</button>
       </div>
       {/if}
@@ -123,6 +123,14 @@
       padding: 10px;
     }
 
+    .btnYes{
+      border: none;
+      background: linear-gradient(71deg, #fa5e6f 30%, #fb9561 70%);
+      @extend %btnConfirm;
+      color: #fff;
+      padding: 10px 20px;
+    }
+
     .btnN {
       border: 1px solid #EF5350;
       background-color: #fff;
@@ -134,7 +142,7 @@
   }
 
   %btnConfirm {
-    border-radius: 10px;
+    border-radius: 17px;
     font-weight: 600;
     font-size: 14px;
   }

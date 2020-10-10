@@ -64,9 +64,9 @@
   }
 
   .disabled {
-    background: #efefef;
+    /* background: #efefef; */
     cursor: not-allowed;
-    color: #bfbfbf;
+    color: #ccc;
   }
 
   .highlight:hover {

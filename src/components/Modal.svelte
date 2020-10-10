@@ -1,71 +1,76 @@
-<script>
-    import { onMount, afterUpdate } from 'svelte';
-    import { createEventDispatcher } from 'svelte';
-    import DatePicker from "./DatePicker.svelte";  
+  <script>
+  import {
+    onMount,
+    afterUpdate
+  } from 'svelte';
+  import {
+    createEventDispatcher
+  } from 'svelte';
+  import DatePicker from "./DatePicker.svelte";
 
-    //props
-    export let modalActive;
-    export let type;
-    export let data;
-   
-    //state
-    const dispatch = createEventDispatcher();
-    const database = firebase.database();
-    let currentDate = new Date();
-    const onDateChange = d => {
-        currentDate = d.detail;
-    };
-    const onDateModalChange = d => {
-      data.date = d.detail
+  //props
+  export let modalActive;
+  export let type;
+  export let data;
+
+  //state
+  const dispatch = createEventDispatcher();
+  const database = firebase.database();
+  let name = '',
+      notes = '';
+  let currentDate = new Date();
+
+  //handler
+  const onDateChange = d => {
+    currentDate = d.detail;
+  }
+
+  const onDateModalChange = d => {
+    data.date = d.detail
+  }
+  
+  afterUpdate(() => {
+    // console.log("after update name:", data.date);
+  })
+
+  const closeHandler = () => dispatch('close');
+  const handleSubmit = () => {
+      if (type == 'add') {
+        let frmt_date = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
+        const rootRef = database.ref('todolist')
+        const autoId = rootRef.push().key
+        rootRef.child(autoId).set({
+          name: name,
+          notes: notes,
+          date: frmt_date,
+          complete: false
+        })
+        dispatch('updateDate', currentDate)
+        alert('Success add data !!')
+        name = ''
+        notes = '',
+          currentDate = new Date()
+        closeHandler()
+      } else if (type == 'edit') {
+        let frmt_date = data.date.getFullYear() + "-" + (data.date.getMonth() + 1) + "-" + data.date.getDate()
+        database.ref('todolist').child(data.id).update({
+          name: data.name,
+          notes: data.notes,
+          date: frmt_date
+        });
+        dispatch('updateDate', data.date)
+        alert('Success edit data !!')
+        closeHandler()
+      }
     }
-    let name = '',
-        notes = '';
 
-
-    afterUpdate(() => {
-		// console.log("after update name:", modalActive);
-    // console.log(data)
-	  })
-
-    const closeHandler = () => dispatch('close');
-    const handleSubmit = () => {
-        if(type=='add'){
-            // console.log(name)
-            let frmt_date = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()
-            const rootRef = database.ref('todolist')
-            const autoId = rootRef.push().key
-            rootRef.child(autoId).set({
-            name: name,
-            notes: notes,
-            date: frmt_date,
-            complete: false
-            })
-            alert('Success add data !!')
-            name = ''
-            notes = '',
-            currentDate = new Date()
-            closeHandler()
-            // console.log(tab, 'tabbbbbbbbbb')
-        }
-        else if(type=='edit'){
-          let frmt_date = data.date.getFullYear() + "-" + (data.date.getMonth() + 1) + "-" + data.date.getDate()
-          database.ref('todolist').child(data.id).update({
-            name: data.name,
-            notes: data.notes,
-            date: frmt_date
-          });
-          alert('Success edit data !!')
-          closeHandler()
-        }
-    }
-   
-</script>
+  </script>
 
 <div>
-    <div class="{modalActive ? 'bg-modal active' : 'bg-modal'}" on:click={closeHandler}></div>
-    <form action="" on:submit|preventDefault={handleSubmit} class="{modalActive? 'add-modal active' : 'add-modal'}">
-        <div style="height:100%; position:relative;">
-        {#if type=='edit'}
+  <div class="{modalActive ? 'bg-modal active' : 'bg-modal'}" on:click={closeHandler}></div>
+  <form action="" on:submit|preventDefault={handleSubmit} class="{modalActive? 'add-modal active' : 'add-modal'}">
+    <div style="height:100%; position:relative;">
+      {#if type=='edit'}
         {#if data !== undefined}
         <h2 > Edit Task</h2>
         <div>
@@ -77,7 +82,7 @@
                 <label for="note" class="title-mdl"><i class="far fa-comment"></i>NOTES</label>
                 <textarea name="note" id="note" cols="30" rows="5" width="100%" bind:value={data.notes}></textarea>
             </div>
-            <div>
+            <div>     
                 <label for="time" class="title-mdl"> <i class="far fa-calendar-alt"></i>DATE</label>
                 <DatePicker
                 type="modal"
@@ -111,12 +116,7 @@
             type="modal"
             on:datechange={onDateChange}
             selected={currentDate}
-            isAllowed={date => {
-                const millisecs = date.getTime();
-                if (millisecs + 25 * 3600 * 1000 < Date.now()) return false;
-               // if (millisecs > Date.now() + 3600 * 24 * 45 * 1000) return false;
-                return true;
-            }} />
+           />
         </div>
         {/if}
       </div>
@@ -124,7 +124,6 @@
       <div class="btn-modal">
         <button><i class="fas fa-check"></i></button>
       </div>
-
     </form>
   </div>
 

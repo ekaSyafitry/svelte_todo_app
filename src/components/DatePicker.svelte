@@ -1,4 +1,5 @@
 <script>
+  import { afterUpdate } from 'svelte';
   import { createEventDispatcher } from "svelte";
   import Calender from "./Calender.svelte";
   import { getMonthName } from "./date_time.js";
@@ -13,13 +14,19 @@
 
   // state
   let date, month, year, showDatePicker,dt;
-
+  var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",];
+   
   // so that these change with props
   $: {
     date = selected.getDate();
     month = selected.getMonth();
     year = selected.getFullYear();
+    dt = months[selected.getMonth()]+" "+selected.getDate()+" "+selected.getFullYear();
   }
+
+  afterUpdate(() => {
+    // getValDate()
+	  })
 
   // handlers
   const onFocus = () => {
@@ -47,18 +54,9 @@
   const onDateChange = d => {
     showDatePicker = false;
     dispatch("datechange", d.detail);
-    // console.log(d.detail)
     selected = d.detail
-    getValDate()
   };
 
-  const getValDate = () => {
-    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",];
-    dt = months[selected.getMonth()]+" "+selected.getDate()+" "+selected.getFullYear();
-    // console.log(dt)
-  }
- 
- getValDate()
 </script>
 
 <style>

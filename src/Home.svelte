@@ -2,16 +2,14 @@
   import DatePicker from "./components/DatePicker.svelte";
   import Modal from "./components/Modal.svelte";
   import ModalConfirm from "./components/ModalConfirm.svelte"
-  import { onMount } from 'svelte';
+  import { onMount , afterUpdate} from 'svelte';
   let currentDate = new Date();
-
+  let dateNew;
   const onDateChange = d => {
     currentDate = d.detail;
-    formatDate()
     getData()
     btnAll()
-  };
-
+  }; 
   let sel_date,day,isLoad,hasLoad, complete, totalComplete,num,deferredPrompt;
   const database = firebase.database();
   let todolist =[],
@@ -33,29 +31,29 @@
       standAlone = false,
       installActive = false;
 
-  const formatDate = () =>{
-    let now = new Date()
-    if (currentDate.toDateString() !== now.toDateString()){
-    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec",];
-    sel_date =  months[(currentDate.getMonth())] + " " + (currentDate.getDate()) + " " + currentDate.getFullYear()
-    }
-    else {
-      sel_date = "Today's tasks"
-    }
-     }
+  let now = new Date()
+  var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec",];
+  
+  $: if (currentDate.toDateString() !== now.toDateString()) {
+		sel_date =  months[(currentDate.getMonth())] + " " + (currentDate.getDate()) + " " + currentDate.getFullYear()
+  }
+  else{
+    sel_date = "Today's tasks"
+  }
 
   const getData = async () =>{
-        isLoad = true
-        let g_date = currentDate.getFullYear() + "-" +  (currentDate.getMonth() + 1) + "-" + currentDate.getDate() 
-        database.ref('todolist').orderByChild('date').equalTo(g_date).on('value', (snapshot) => { realtimedata(snapshot) })     
+    // console.log(dateNew)
+    isLoad = true
+    let g_date = currentDate.getFullYear() + "-" +  (currentDate.getMonth() + 1) + "-" + currentDate.getDate() 
+    database.ref('todolist').orderByChild('date').equalTo(g_date).on('value', (snapshot) => { realtimedata(snapshot) })     
   }
 
   const realtimedata = async (data) =>{
-    // console.log(data)
     let reads = []
     data.forEach(function (val) {
       reads.push({...val.val(), id: val.key})
     })
+    // console.log
     todolist = reads
     isLoad = false
     hasLoad = true
@@ -117,20 +115,13 @@
   }
 
   const confirmComplete = () => {
-    // console.log(complete, 'complete')
-    // if (complete == true) {
       database.ref('todolist/' + id_todo + '/complete').set(true);
       completeActive = false   
-    // } else{
-     
-    // }
   }
 
   const confirmIncomplete = () => {
-    // console.log(id_todo)
   database.ref('todolist/' + id_todo + '/complete').set(false);
-    incompleteActive = false
-    // console.log(incompleteActive)
+  incompleteActive = false
 }
 
   const deleteData = id => {
@@ -166,16 +157,16 @@
     showMenu = !showMenu;
   }
 
+  const updateGetDate = val => {
+   currentDate = val.detail;
+   getData()
+  }
+
 //  ------------------------------------------- PWA --------------------------------------------------------------
   const installModal = () => {
     deferredPrompt.prompt();
     installActive = false
-  }
-
-  // if (window.matchMedia('(display-mode: standalone)').matches) { 
-  //   standAlone = true 
-  //   console.log('dfsdkf')  
-  // }  
+  } 
 
   window.addEventListener('beforeinstallprompt', (e) => {
   showInstallPromo(e);
@@ -189,10 +180,8 @@
   const showInstallPromo = e => {
     deferredPrompt = e;
     installActive = !installActive
-    console.log(installActive)
   }
   
-  formatDate()
   getData()
  
 </script>
@@ -205,11 +194,6 @@
       <div class="header">
         <h1>To-do</h1>
         <div class="box-date">
-          {#if !standAlone }
-          <div on:click={installModal} style="margin-right:20px" id="install" class="hidden"> 
-            <i class="fas fa-arrow-alt-circle-down" style="font-size:25px"></i>
-          </div>
-          {/if}
           <div class="cal">
             <DatePicker on:datechange={onDateChange} selected={currentDate} type="Home" />
           </div>
@@ -303,8 +287,8 @@
         {/if}
       </div>  
     </div>
-    <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} data={dataModal}/>
-      <Modal modalActive={editActive} type="edit" data={dataModal} on:close={() => (editActive = false)} />
+      <Modal modalActive={addActive} type="add" on:close={() => (addActive = false)} data={dataModal} on:updateDate={updateGetDate}/>
+      <Modal modalActive={editActive} type="edit" data={dataModal} on:close={() => (editActive = false)} on:updateDate={updateGetDate} />
       <ModalConfirm modalActive={completeActive} type="complete" on:close={() => (completeActive = false)} on:yesBtn={confirmComplete} />
       <ModalConfirm modalActive={incompleteActive} type="incomplete" on:yesBtn={confirmIncomplete} on:close={() => (incompleteActive = false)} />
       <ModalConfirm modalActive={trashActive} type="trash" on:yesBtn={confirmDelete} on:close={() => (trashActive = false)} />
@@ -313,9 +297,6 @@
 </slot>
 
 <style type="text/scss">
-  .hidden{
-    display: none;
-  }
   .container {
     max-width: 500px;
     height: 100vh;
@@ -332,18 +313,6 @@
   .calender-box {
     background: linear-gradient(71deg, rgba(250, 94, 111, 1) 30%, rgba(251, 149, 97, 1) 70%);
     display: grid;
-    // grid-template-columns: 2fr 1fr;
-    // padding: 0 25px;
-    // position: relative;
-
-    // .capt {
-    //   margin-top: 14px;
-    //   font-size: 11px;
-    //   width: 100px;
-    //   color: #fff;
-    //   font-style: italic;
-    //   opacity: 0.7;
-    // }
 
     h1 {
       color: #fff;
@@ -354,14 +323,6 @@
       align-self: flex-end;
       color: white;
       display: flex;
-      // .date {
-      //   text-align: end;
-
-      //   i {
-      //     font-size: 30px;
-      //     margin-bottom: 5px;
-      //   }
-      // }
 
       .cal {
         align-self: end;
@@ -497,6 +458,7 @@
       }
 
       .title {
+        overflow-wrap: anywhere;
         text-transform: capitalize;
         font-weight: 900;
         color: #60563d;
