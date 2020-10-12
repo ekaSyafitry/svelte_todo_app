@@ -160,6 +160,7 @@
   const updateGetDate = val => {
    currentDate = val.detail;
    getData()
+   btnAll()
   }
 
 //  ------------------------------------------- PWA --------------------------------------------------------------
@@ -190,7 +191,6 @@
 <slot>
   <div class="container home">
     <div class="calender-box">
-
       <div class="header">
         <h1>To-do</h1>
         <div class="box-date">
@@ -203,34 +203,14 @@
 
     <div class="card">
       <div class="wrapTitle">
-        {#if current == 'all'}
         <div class="wrapDay">
+          {#if current === 'all'}
           <h2>{sel_date}</h2>
-          <div class="btnFilter" on:click={toogleMenu}><i class="fas fa-filter"></i></div>
-          <div class="{showMenu? "circle show" : "circle"}">
-            <div id="all" on:click={btnAll} class="{current === 'all' ? 'active' : ''}">All</div>
-            <div id="complete" on:click={btnCom} class="{current === 'com' ? 'active' : ''}">Complete</div>
-            <div id="incomplete" on:click={btnIncom} class="{current === 'incom' ? 'active' : ''}">Incomplete</div>
-          </div>
-        </div> 
-       <div class="unfinished">{totalIncomplete} unfinished tasks from total {sum} </div>
-          <div class="meter">
-            <div id="myBar"></div>
-          </div>
-        {:else if current == 'com'}
-        <div class="wrapDay">
+          {:else if current === 'com'}
           <h2>Complete tasks</h2>
-          <div class="btnFilter" on:click={toogleMenu}><i class="fas fa-filter"></i></div>
-          <div class="{showMenu? "circle show" : "circle"}">
-            <div id="all" on:click={btnAll} class="{current === 'all' ? 'active' : ''}">All</div>
-            <div id="complete" on:click={btnCom} class="{current === 'com' ? 'active' : ''}">Complete</div>
-            <div id="incomplete" on:click={btnIncom} class="{current === 'incom' ? 'active' : ''}">Incomplete</div>
-          </div> 
-        </div> 
-        <div style="color: #60563d;">{totalComplete} tasks </div>
-        {:else if current == 'incom'}
-        <div class="wrapDay">
+          {:else if current === 'incom'}
           <h2>Incomplete tasks</h2>
+          {/if}
           <div class="btnFilter" on:click={toogleMenu}><i class="fas fa-filter"></i></div>
           <div class="{showMenu? "circle show" : "circle"}">
             <div id="all" on:click={btnAll} class="{current === 'all' ? 'active' : ''}">All</div>
@@ -238,7 +218,15 @@
             <div id="incomplete" on:click={btnIncom} class="{current === 'incom' ? 'active' : ''}">Incomplete</div>
           </div>
         </div> 
-        <div style="color: #60563d;">{totalIncomplete} tasks </div>
+        {#if current === 'all'}
+          <div class="unfinished">{totalIncomplete} unfinished tasks from total {sum} </div>
+              <div class="meter">
+                <div id="myBar"></div>
+              </div>
+        {:else if current === 'com'}
+          <div style="color: #60563d;">{totalComplete} tasks </div>
+        {:else if current === 'incom'}
+          <div style="color: #60563d;">{totalIncomplete} tasks </div>
         {/if}
       </div>
       <div class="card-box">
@@ -304,8 +292,6 @@
     margin: 0 auto;
     background: #fff;
     display: grid;
-    // background: #fff;
-    // grid-template-rows: 2fr 4fr;
     grid-template-rows: 13% 87%;
     background: linear-gradient(71deg, rgba(250, 94, 111, 1) 30%, rgba(251, 149, 97, 1) 70%);
   }
